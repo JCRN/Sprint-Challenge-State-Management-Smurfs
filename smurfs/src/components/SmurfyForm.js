@@ -1,43 +1,22 @@
 import React, { useContext, useState } from 'react'
 import axios from 'axios'
 
-import SmurfContext from '../contexts/SmurfContext'
+import SmurfsContext from '../contexts/SmurfsContext'
 
-const SmurfyForm = () => {
-  const { addSmurf } = useContext(SmurfsContext)
+const SmurfyForm = value => {
+  const { getSmurfs } = useContext(SmurfsContext)
+  const [smurf, setSmurf] = useState({})
 
-  const [smurf, setSmurf] = useState({
-    name: '',
-    age: '',
-    height: '',
-    id: null
-  })
+  const handleSubmit = () => {
+    axios
+      .post('http://localhost:3333/smurfs', smurf)
+      .then(response => console.log('post response: ', response))
+      .catch(error => console.log('post-error: ', error))
+  }
 
   const handleInputChange = event => {
-    const target = event.target
-    const value = target.value
-    const name = target.name
-    setSmurf({ [name]: value })
-  }
-
-  const handleSubmit = event => {
-    event.preventDefault()
-    axios.post('http://localhost:3333/smurfs', {
-      name: smurf.name,
-      age: smurf.age,
-      height: smurf.height,
-      id: Date.now()
-    })
-  }
-
-  const getSmurfs = () => {
-    axios
-      .get('http://localhost:3333/smurfs')
-      .then(results => {
-        console.log('get smurfs results: ', results)
-        setSmurfs(results.data)
-      })
-      .catch(error => console.log('get smurfs error: ', error))
+    const { name, value } = event.target
+    setSmurf({ ...smurf, [name]: value })
   }
 
   return (
@@ -45,34 +24,24 @@ const SmurfyForm = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Enter a Smurfy Name:
-          <input
-            type="text"
-            name="name"
-            value={smurf.name}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="name" onChange={handleInputChange} />
         </label>
+        <br />
         <label>
           How old is this smurf?:
-          <input
-            type="text"
-            name="age"
-            value={smurf.age}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="age" onChange={handleInputChange} />
         </label>
+        <br />
         <label>
-          How tall is this smurf in cm?:
-          <input
-            type="text"
-            name="height"
-            value={smurf.height}
-            onChange={handleInputChange}
-          />
+          How tall is this smurf?:
+          <input type="text" name="height" onChange={handleInputChange} />
         </label>
-        <button type="submit">Submit your Smurf!</button>
+        <br />
+        <button type="submit" onClick={handleSubmit}>
+          Submit your Smurf!
+        </button>
       </form>
-      <button onClick={getSmurfs}>Get all of the Smurfs!</button>
+      <button onClick={getSmurfs}>Get your Smurfs!</button>
     </>
   )
 }
