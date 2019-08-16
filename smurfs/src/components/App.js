@@ -1,12 +1,16 @@
+// Import dependencies
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+// Import contexts
+import SmurfContext from '../contexts/SmurfContext'
+import SmurfsContext from '../contexts/SmurfsContext'
+
+// Import components
+import SmurfyForm from './SmurfyForm'
+
+// Import styles
 import './App.css'
-
-import { SmurfContext } from '../contexts/SmurfContext'
-import { SmurfsContext } from '../contexts/SmurfsContext'
-
-import { SmurfyForm } from './SmurfyForm'
 
 export default function App() {
   const [smurfs, setSmurfs] = useState([])
@@ -21,10 +25,8 @@ export default function App() {
       .catch(error => console.log('get smurfs error: ', error))
   }, [])
 
-  const postSmurf = smurf => {}
-
   return (
-    <SmurfsContext.Provider value={{ smurfs, setSmurfs }}>
+    <SmurfsContext.Provider value={{ smurfs }}>
       {/* <SmurfContext.Provider value={{ postSmurf }}> */}
       <div className="App">
         <h1>SMURFS! 2.0 W/ CONTEXTS</h1>

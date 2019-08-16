@@ -1,3 +1,12 @@
 import { createContext } from 'react'
 
-export const SmurfsContext = createContext()
+const SmurfsContext = createContext({
+    name: '',
+    age: '',
+    height: '',
+    id: ''
+
+    addSmurf: smurf => {}
+})
+
+export default SmurfsContext
